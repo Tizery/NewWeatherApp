@@ -38,9 +38,6 @@ class DetailsFragment : Fragment() {
                 feelsLikeValue.text = it.feelsLike.toString()
             }
         }
-        /*val observer = Observer<AppState> { renderData(it) }
-        viewModel.getLiveData().observe(viewLifecycleOwner, observer)
-        viewModel.getWeatherFromLocalSourceRussian()*/
     }
 
     override fun onDestroyView() {
@@ -48,42 +45,9 @@ class DetailsFragment : Fragment() {
         _binding = null
     }
 
-    /*private fun renderData(appState: AppState) = with(binding) {
-        when (appState) {
-            is AppState.Success -> {
-                val weatherData = appState.weatherData
-                progressBar.visibility = View.GONE
-                weatherGroup.visibility = View.VISIBLE
-                setData(weatherData)
-            }
-            is AppState.Loading -> {
-                progressBar.visibility = View.VISIBLE
-                weatherGroup.visibility - View.INVISIBLE
-            }
-            is AppState.Error -> {
-                progressBar.visibility = View.GONE
-                weatherGroup.visibility = View.INVISIBLE
-                Snackbar.make(mainView, "Ошибка", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Перезагрузите, пожалуйста") { viewModel.getWeatherFromLocalSourceRussian() }
-                    .show()
-            }
-        }
-    }*/
-
-    /*private fun setData(weatherData: Weather) = with(binding) {
-        cityName.text = weatherData.cityName.cityName
-        cityCoordinates.text = String.format(
-            getString(R.string.city_coordinates),
-            weatherData.cityName.lat.toString(),
-            weatherData.cityName.lon.toString()
-        )
-        temperatureValue.text = weatherData.temperature.toString()
-        feelsLikeValue.text = weatherData.feelsLike.toString()
-    }*/
-
     companion object {
         const val BUNDLE_EXTRA = "WEATHER"
-        fun newInstance(bundle: Bundle) : DetailsFragment{
+        fun newInstance(bundle: Bundle): DetailsFragment {
             val fragment = DetailsFragment()
             fragment.arguments = bundle
             return fragment
