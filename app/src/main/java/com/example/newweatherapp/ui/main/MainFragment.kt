@@ -9,6 +9,7 @@ import com.example.newweatherapp.AppState
 import com.example.newweatherapp.R
 import com.example.newweatherapp.databinding.FragmentMainBinding
 import com.example.newweatherapp.model.entities.Weather
+import com.example.newweatherapp.showSnackbar
 import com.example.newweatherapp.ui.adapters.MainFragmentAdapter
 import com.example.newweatherapp.ui.details.DetailsFragment
 import com.google.android.material.snackbar.Snackbar
@@ -39,7 +40,7 @@ class MainFragment : Fragment() {
         with(binding) {
             mainFragmentRecyclerView.adapter = adapter
             mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
-            viewModel.getLiveData().observe(viewLifecycleOwner, { renderData(it) })
+            viewModel.getLiveData().observe(viewLifecycleOwner) { renderData(it) }
             viewModel.getWeatherFromLocalSourceRussian()
         }
     }
@@ -72,7 +73,6 @@ class MainFragment : Fragment() {
                                 .commitAllowingStateLoss()
                         }
                     }
-
                 }
                 ).apply {
                     setWeather(appState.weatherData)
@@ -84,14 +84,13 @@ class MainFragment : Fragment() {
             }
             is AppState.Error -> {
                 mainFragmentLoadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(
-                        binding.mainFragmentFAB,
-                        getString(R.string.error),
-                        Snackbar.LENGTH_INDEFINITE
-                    )
-                    .setAction(getString(R.string.reload)) { viewModel.getWeatherFromLocalSourceRussian() }
-                    .show()
+                mainFragmentFAB.showSnackbar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    Snackbar.LENGTH_INDEFINITE
+                ) {
+                    run { viewModel.getWeatherFromLocalSourceRussian() }
+                }
             }
         }
     }
