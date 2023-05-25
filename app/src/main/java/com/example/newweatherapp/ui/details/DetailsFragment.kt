@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.newweatherapp.AppState
 import com.example.newweatherapp.R
 import com.example.newweatherapp.databinding.FragmentDetailsBinding
 import com.example.newweatherapp.model.entities.Weather
@@ -30,15 +31,33 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Weather>(BUNDLE_EXTRA)?.let {
             with(binding) {
-                val city = it.city
-                cityName.text = city.cityName
+                cityName.text = it.city.cityName
                 cityCoordinates.text = String.format(
                     getString(R.string.city_coordinates),
-                    city.lat.toString(),
-                    city.lon.toString()
+                    it.city.lat.toString(),
+                    it.city.lon.toString()
                 )
-                temperatureValue.text = it.temperature.toString()
-                feelsLikeValue.text = it.feelsLike.toString()
+                viewModel.liveDataToObserve.observe(viewLifecycleOwner) { appState ->
+                    when (appState) {
+                        is AppState.Error -> {
+                            mainView.visibility = View.INVISIBLE
+                            loadingLayout.visibility = View.GONE
+                            errorTV.visibility = View.VISIBLE
+                        }
+                        AppState.Loading -> {
+                            mainView.visibility = View.INVISIBLE
+                            binding.loadingLayout.visibility = View.VISIBLE
+                        }
+                        is AppState.Success -> {
+                            loadingLayout.visibility = View.GONE
+                            mainView.visibility = View.VISIBLE
+                            temperatureValue.text = appState.weatherData[0].temperature.toString()
+                            feelsLikeValue.text = appState.weatherData[0].feelsLike.toString()
+                            weatherCondition.text = appState.weatherData[0].condition
+                        }
+                    }
+                }
+                viewModel.loadData(it.city.lat, it.city.lon)
             }
         }
     }
