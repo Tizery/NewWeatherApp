@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import com.example.newweatherapp.R
 import com.example.newweatherapp.databinding.FragmentDetailsBinding
 import com.example.newweatherapp.model.entities.Weather
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DetailsFragment : Fragment() {
 
+    private val viewModel : DetailsViewModel by viewModel()
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
