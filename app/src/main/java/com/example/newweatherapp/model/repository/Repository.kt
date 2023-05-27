@@ -4,7 +4,7 @@ import com.example.newweatherapp.model.entities.Weather
 
 interface Repository {
 
-    fun getWeatherFromServer() : Weather
-    fun getWeatherFromLocalStorageRussian() : List<Weather>
-    fun getWeatherFromLocalStorageWorld() : List<Weather>
+    fun getWeatherFromServer(lat: Double, lon: Double): Weather
+    fun getWeatherFromLocalStorageRussian(): List<Weather>
+    fun getWeatherFromLocalStorageWorld(): List<Weather>
 }
