@@ -6,12 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newweatherapp.AppState
 import com.example.newweatherapp.model.repository.Repository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.Thread.sleep
 
-class MainViewModel(private val repository: Repository) : ViewModel() {
+class MainViewModel(private val repository: Repository) : ViewModel(), CoroutineScope by MainScope() {
 
     private val liveData = MutableLiveData<AppState>()
 
