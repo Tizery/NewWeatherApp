@@ -46,7 +46,7 @@ class DetailsFragment : Fragment() {
                         }
                         AppState.Loading -> {
                             mainView.visibility = View.INVISIBLE
-                            binding.loadingLayout.visibility = View.VISIBLE
+                            loadingLayout.visibility = View.VISIBLE
                         }
                         is AppState.Success -> {
                             loadingLayout.visibility = View.GONE

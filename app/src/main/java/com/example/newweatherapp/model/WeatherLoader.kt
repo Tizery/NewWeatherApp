@@ -2,6 +2,7 @@ package com.example.newweatherapp.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.newweatherapp.BuildConfig
 import com.example.newweatherapp.model.rest_entities.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -23,7 +24,7 @@ object WeatherLoader {
                 urlConnection.requestMethod = "GET"
                 urlConnection.addRequestProperty(
                     "X-Yandex-API-Key",
-                    "ab04221b-3bbb-4e34-bfef-88224e465e80"
+                    BuildConfig.WEATHER_API_KEY
                 )
                 urlConnection.readTimeout = 10000
                 val bufferedReader = BufferedReader(InputStreamReader(urlConnection.inputStream))
