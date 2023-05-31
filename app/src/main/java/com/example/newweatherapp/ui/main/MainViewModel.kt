@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.newweatherapp.AppState
 import com.example.newweatherapp.model.repository.Repository
-import kotlinx.coroutines.*
-import java.lang.Thread.sleep
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: Repository) : ViewModel(), CoroutineScope by MainScope() {
+class MainViewModel(private val repository: Repository) : ViewModel(),
+    CoroutineScope by MainScope() {
 
     private val liveData = MutableLiveData<AppState>()
 
@@ -21,7 +24,6 @@ class MainViewModel(private val repository: Repository) : ViewModel(), Coroutine
     private fun getDataFromLocalSource(isRussian: Boolean) {
         liveData.value = AppState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1000)
             liveData.postValue(
                 if (isRussian) {
                     AppState.Success(repository.getWeatherFromLocalStorageRussian())
