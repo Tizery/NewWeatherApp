@@ -3,11 +3,16 @@ package com.example.newweatherapp.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.newweatherapp.AppState
 import com.example.newweatherapp.model.repository.Repository
-import java.lang.Thread.sleep
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: Repository) : ViewModel() {
+class MainViewModel(private val repository: Repository) : ViewModel(),
+    CoroutineScope by MainScope() {
 
     private val liveData = MutableLiveData<AppState>()
 
@@ -18,8 +23,7 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
 
     private fun getDataFromLocalSource(isRussian: Boolean) {
         liveData.value = AppState.Loading
-        Thread {
-            sleep(1000)
+        viewModelScope.launch(Dispatchers.IO) {
             liveData.postValue(
                 if (isRussian) {
                     AppState.Success(repository.getWeatherFromLocalStorageRussian())
@@ -27,6 +31,6 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
                     AppState.Success(repository.getWeatherFromLocalStorageWorld())
                 }
             )
-        }.start()
+        }
     }
 }
